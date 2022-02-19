@@ -10,16 +10,16 @@ class Analizador():
         self.data = {}
         self.inst = {}
 
-    def Leer(self):
+    def Leer(self, extension):
         content = ""
         y = ""
         Tk().withdraw()
         try:
             ruta = askopenfilename(title='Seleccionar archivo',
-                                    filetypes=[("Archivos", "*.data"),
+                                    filetypes=[("Archivos", f"*{extension}"),
                                         ("All Files", "*")])
             print(ruta)
-            with open(ruta) as infile:
+            with open(ruta, encoding='utf-8') as infile:
                 content = infile.read().strip()
             print(str(content))
 
@@ -116,7 +116,7 @@ class Analizador():
             try:
                 year_n = int(year_n)
                 if year_n != 0 and name_n != "" and data_list != [] and par == 2:
-                    self.data[self.id_data] = {'year': year_n, 'name': name_n, 'productos': data_list}
+                    self.data[self.id_data] = {'year': year_n, 'mes': name_n, 'productos': data_list}
                     self.id_data += 1
                 else:
                     print("Error, no se puede leer el archivo")
@@ -124,7 +124,7 @@ class Analizador():
             except:
                 print("Error, no se puede leer el archivo")
 
-    def Analizar_2(self):
+    def AnalizarInstrucciones(self):
         cadena = self.text
         inicio = cadena[0:2]
         a = len(cadena) - 3
@@ -136,7 +136,7 @@ class Analizador():
         aux = {}
 
         if inicio == "<¿" and fin == '"?>':
-            cadena = cadena[2:0]
+            cadena = cadena[2:]
             cadena = cadena[:-2]
             cadena += "$"
             comando = ""
@@ -158,17 +158,53 @@ class Analizador():
                     if comando == 'nombre':
                         aux[comando] = nombre
                     elif comando == 'grafica':
-                        aux[comando] == nombre
+                        aux[comando] = nombre
                     elif comando == 'titulo':
-                        aux[comando] == nombre
+                        aux[comando] = nombre
                     elif comando == 'titulox':
-                        aux[comando] == nombre
+                        aux[comando] = nombre
                     elif comando == 'tituloy':
-                        aux[comando] == nombre
+                        aux[comando] = nombre
                     else:
                         print("Error, no se reconoce el comando")
                         aux = {}
                         break
-
+                    nombre = ""
+                    comando = ""
+                    caso = 0
+                else:
+                    print("Error, no se puede leer este archivo")
+                    aux = {}
+                    break
+            if 'nombre' in aux and 'grafica' in aux:
+                self.inst[self.id_inst] = aux
+                self.id_inst += 1
+                print(self.inst)
+            else:
+                print("Error, faltan datos")
         else:
             print("Error, no se puede leer el archivo")
+
+    def EjeX(self, id):
+        ejex = []
+        if id in self.data:
+            for p in self.data[id]['productos']:
+                ejex.append(p[0])
+        return ejex
+            
+    def EjeY(self, id):
+        ejey = []
+        if id in self.data:
+            for p in self.data[id]['productos']:
+                ejey.append(p[2])
+        return ejey
+
+    def getData(self):
+        for dato in self.data:
+            print(str(dato)+".", self.data[dato]['mes'])
+        res = input("Seleccionar una opción: ")
+        return int(res)
+
+    def getInst(self, id):
+        for id in self.inst:
+            return self.inst[id]

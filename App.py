@@ -1,4 +1,5 @@
 from Analizador import Analizador
+from Graficador import Graficador
 Analizar = Analizador()
 
 class App:
@@ -18,12 +19,23 @@ class App:
         -------------------------------
         Opción: ''')
             if op == '1':
-                Analizar.Leer()
+                Analizar.Leer('.data')
                 Analizar.AnalizarData()
             elif op == '2':
-                pass
-            elif op == '3':
-                pass
+                Analizar.Leer('.lfp')
+                Analizar.AnalizarInstrucciones()
+            elif op == '3':              
+                resp = int(Analizar.getData())
+                inst = Analizar.getInst(resp)
+                nombre = inst['nombre']
+                grafica = inst['grafica']
+                titulo = inst['titulo']
+                titulox = inst['titulox']
+                tituloy = inst['tituloy']
+                ejex = Analizar.EjeX(resp)
+                ejey = Analizar.EjeY(resp)
+                graf = Graficador(nombre, grafica, titulo, titulox, tituloy, ejex, ejey)
+                graf.Analizar()
             elif op == '4':
                 pass
             elif op == '5':
