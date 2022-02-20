@@ -1,5 +1,7 @@
 from Analizador import Analizador
 from Graficador import Graficador
+from GenerarHTML import Reporte
+
 Analizar = Analizador()
 
 class App:
@@ -37,7 +39,7 @@ class App:
                 graf = Graficador(nombre, grafica, titulo, titulox, tituloy, ejex, ejey)
                 graf.Analizar()
             elif op == '4':
-                pass
+                Reporte()
             elif op == '5':
                 print('Finalizado')
                 break

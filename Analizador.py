@@ -72,7 +72,6 @@ class Analizador():
                     year = True
             elif letra == '(' and name == True and year == True:
                 par += 1
-
             elif letra == ')' and name == True and year == True and par == True:
                 par += 1
                 print("Archivo leido correctamente")
@@ -179,7 +178,7 @@ class Analizador():
             if 'nombre' in aux and 'grafica' in aux:
                 self.inst[self.id_inst] = aux
                 self.id_inst += 1
-                print(self.inst)
+                #print(self.inst)
             else:
                 print("Error, faltan datos")
         else:
